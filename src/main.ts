@@ -1,4 +1,5 @@
 declare let window: Window;
+declare let require: any;
 
 interface Window {
     msign: {
@@ -6,11 +7,14 @@ interface Window {
     }
 }
 
+const io = require('socket.io-client');
+
 class Message {
 
     server = null;
     cid = null;
     callback = null;
+    socket = null;
 
     constructor(server: string,
                 cid: string,
@@ -19,6 +23,21 @@ class Message {
         this.server = server;
         this.cid = cid;
         this.callback = callback;
+
+        this._initSocket();
+    }
+
+    private _initSocket() {
+
+        this.socket = io(this.server);
+    }
+
+    async start() {
+
+    }
+
+    async stop() {
+
     }
 }
 
