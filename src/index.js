@@ -1,3 +1,5 @@
+'use strict';
+
 import IOWx from './lib/wxapp-socket-io';
 import IO from 'socket.io-client';
 
