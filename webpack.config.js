@@ -1,38 +1,38 @@
+const webpack = require('webpack');
 const path    = require('path');
-const package = require('./package');
+
+const ENV = process.env.NODE_ENV;
 
 module.exports = {
-  entry    : './src/index.js',
-  output   : {
-    path    : path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+  context: path.join(__dirname, './src'),
+  entry  : {
+    app: [
+      './index.js'
+    ]
   },
-  devServer: {
-    contentBase       : './dist',
-    host              : '0.0.0.0',
-    port              : 8080,
-    historyApiFallback: true,
-    inline            : true
+  output : {
+    path         : path.join(__dirname, './dist'),
+    filename     : 'index.js',
+    library      : 'msign',
+    libraryTarget: 'umd'
   },
-  module   : {
-    unknownContextCritical: false,
-    rules                 : [
+  devtool: '#source-map',
+  resolve: {
+    extensions: ['', '.js']
+  },
+  module : {
+    loaders: [
       {
         test   : /\.js$/,
-        exclude: /node_modules/,
-        use    : [
-          {
-            loader : 'babel-loader',
-            options: {
-              presets: [['es2015', { modules: false }]]
-            }
-          }
-        ]
-      },
-      {
-        test  : /\.ts$/,
-        loader: 'babel-loader!ts-loader'
+        include: path.resolve(__dirname, './src'),
+        loaders: ['babel']
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin(
+        {
+          'process.env.NODE_ENV': JSON.stringify(ENV)
+        })
+  ]
 };
